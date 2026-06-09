@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Painel CMS — Rafael Machado Advocacia</title>
+  <meta name="robots" content="noindex, nofollow"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="admin.css?v=2.0.3"/>
+</head>
+<body>
+<div class="admin-wrapper">
+
+  <!-- ═══════════ SIDEBAR ═══════════ -->
+  <aside class="admin-sidebar" id="admin-sidebar" role="complementary" aria-label="Painel de navegação">
+    <div class="sidebar-brand">
+      <img src="../assets/images/logo-escudo-goldsf.png"
+           alt="Rafael Machado Advogado"
+           class="sidebar-logo-img"
+           width="36" height="36"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+      />
+      <svg width="28" height="32" viewBox="0 0 28 32" fill="none" aria-hidden="true" style="display:none">
+        <path d="M14 0L0 5.5V16C0 23.5 6.2 30.3 14 32C21.8 30.3 28 23.5 28 16V5.5L14 0Z" fill="url(#sg)"/>
+        <path d="M9 16.5L12.5 20L19 13" stroke="#1E2028" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <defs><linearGradient id="sg" x1="0" y1="0" x2="28" y2="32"><stop stop-color="#D4AF6A"/><stop offset="1" stop-color="#8B6914"/></linearGradient></defs>
+      </svg>
+      <div>
+        <span class="brand-name">Rafael Machado</span>
+        <span class="brand-sub">Painel do Blog</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav" aria-label="Menu do painel">
+      <button class="sidebar-btn active" id="btn-list" data-view="list">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Todos os Artigos
+        <span class="sidebar-badge" id="posts-count">0</span>
+      </button>
+      <button class="sidebar-btn" id="btn-new" data-view="editor">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Novo Artigo
+      </button>
+      <div class="sidebar-sep" aria-hidden="true"></div>
+      <button class="sidebar-btn sidebar-btn--sm" id="btn-export">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Exportar Backup
+      </button>
+      <label class="sidebar-btn sidebar-btn--sm" id="btn-import-label" style="cursor:pointer;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Importar Backup
+        <input type="file" id="btn-import" accept=".json" style="display:none;" aria-label="Importar arquivo de backup JSON"/>
+      </label>
+    </nav>
+
+    <div class="sidebar-actions">
+      <a href="../blog.html" class="sidebar-action sidebar-action--site" target="_blank" rel="noopener noreferrer" title="Abrir o Blog">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Voltar ao Blog
+      </a>
+      <button class="sidebar-action sidebar-action--logout" id="btn-logout" title="Sair do painel">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sair
+      </button>
+    </div>
+  </aside>
+
+  <!-- ═══════════ MAIN ═══════════ -->
+  <main class="admin-main" role="main" id="admin-main">
+
+    <!-- ── LIST VIEW ── -->
+    <div id="view-list" class="admin-view active">
+      <header class="view-header">
+        <div>
+          <h1 class="view-title">Artigos do Blog</h1>
+          <p class="view-sub">Crie, edite e gerencie os posts que aparecem no site</p>
+        </div>
+        <button class="btn-primary" id="new-post-btn" aria-label="Criar novo artigo">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Novo Artigo
+        </button>
+      </header>
+
+      <!-- Search bar -->
+      <div class="search-bar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" id="search-input" placeholder="Buscar artigos pelo título ou resumo…" aria-label="Buscar artigos"/>
+        <kbd class="search-kbd" aria-hidden="true">⌘K</kbd>
+      </div>
+
+      <!-- Stats bar -->
+      <div class="stats-bar" id="stats-bar" aria-live="polite"></div>
+
+      <div id="posts-list" class="posts-list" role="list" aria-label="Lista de artigos">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <!-- ── EDITOR VIEW ── -->
+    <div id="view-editor" class="admin-view">
+      <header class="view-header editor-view-header">
+        <div class="editor-header-left">
+          <button class="btn-back" id="cancel-btn" aria-label="Voltar para a lista">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </button>
+          <div>
+            <h1 class="view-title" id="editor-title">Novo Artigo</h1>
+            <div class="editor-meta-status">
+              <span class="save-status" id="save-status" aria-live="polite">
+                <span class="save-dot"></span>
+                <span id="save-status-text">Não salvo</span>
+              </span>
+              <span class="word-count" id="word-count" aria-live="polite">0 palavras</span>
+            </div>
+          </div>
+        </div>
+        <div class="editor-header-actions">
+          <button class="btn-icon-toggle" id="preview-toggle" title="Alternar preview (Ctrl+Shift+P)" aria-label="Alternar modo de preview" aria-pressed="false">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Preview
+          </button>
+          <button class="btn-primary" id="save-btn-top" type="button" aria-label="Salvar artigo">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            Salvar
+          </button>
+        </div>
+      </header>
+
+      <div class="editor-layout" id="editor-layout">
+
+        <!-- FORM PANEL -->
+        <div class="editor-panel form-panel" id="form-panel">
+          <form id="post-form" class="post-form" novalidate>
+            <input type="hidden" id="post-id"/>
+
+            <!-- Title -->
+            <div class="form-group form-group--title">
+              <label class="form-label sr-only" for="post-title">Título do Artigo</label>
+              <input
+                type="text"
+                id="post-title"
+                class="form-input title-input"
+                placeholder="Título do artigo…"
+                required
+                aria-required="true"
+                maxlength="200"
+                autocomplete="off"
+              />
+              <div class="title-char-count"><span id="title-counter">0</span>/200</div>
+            </div>
+
+            <!-- Excerpt -->
+            <div class="form-group">
+              <label class="form-label" for="post-excerpt">
+                Resumo
+                <span class="label-badge">Aparece na listagem do blog</span>
+              </label>
+              <textarea
+                id="post-excerpt"
+                class="form-textarea"
+                rows="3"
+                placeholder="Uma descrição breve e persuasiva que convida o leitor a clicar…"
+                required
+                aria-required="true"
+                maxlength="400"
+              ></textarea>
+              <div class="textarea-footer">
+                <span class="form-hint">
+                  <span id="excerpt-counter" class="counter-num">0</span>/400 caracteres
+                </span>
+                <span class="form-hint" id="excerpt-status"></span>
+              </div>
+            </div>
+
+            <!-- Rich text area (Content) -->
+            <div class="form-group editor-group">
+              <div class="editor-label-row">
+                <label class="form-label">Conteúdo do Artigo</label>
+                <div class="editor-view-tabs" role="tablist" aria-label="Modo de edição">
+                  <button type="button" class="view-tab active" id="tab-editor" role="tab" aria-selected="true" aria-controls="post-content-editor">Editar</button>
+                  <button type="button" class="view-tab" id="tab-preview-inline" role="tab" aria-selected="false" aria-controls="content-preview-inline">Pré-visualizar</button>
+                </div>
+              </div>
+
+              <!-- Toolbar -->
+              <div class="editor-toolbar" role="toolbar" aria-label="Ferramentas de formatação de texto">
+                <div class="toolbar-group" role="group" aria-label="Texto">
+                  <button type="button" class="toolbar-btn" data-cmd="bold" title="Negrito (Ctrl+B)" aria-label="Negrito">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 4h8a4 4 0 014 4 4 4 0 01-4 4H6z"/><path d="M6 12h9a4 4 0 014 4 4 4 0 01-4 4H6z"/></svg>
+                  </button>
+                  <button type="button" class="toolbar-btn" data-cmd="italic" title="Itálico (Ctrl+I)" aria-label="Itálico">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="19" y1="4" x2="10" y2="4"/><line x1="14" y1="20" x2="5" y2="20"/><line x1="15" y1="4" x2="9" y2="20"/></svg>
+                  </button>
+                  <button type="button" class="toolbar-btn" data-cmd="underline" title="Sublinhado (Ctrl+U)" aria-label="Sublinhado">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 3v7a6 6 0 006 6 6 6 0 006-6V3"/><line x1="4" y1="21" x2="20" y2="21"/></svg>
+                  </button>
+                  <button type="button" class="toolbar-btn" data-cmd="removeFormat" title="Limpar formatação" aria-label="Limpar formatação">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17 3H5l6 6.5L5 21h6m6-9l4 4m0-4l-4 4"/></svg>
+                  </button>
+                </div>
+
+                <div class="toolbar-sep" aria-hidden="true"></div>
+
+                <div class="toolbar-group" role="group" aria-label="Títulos">
+                  <button type="button" class="toolbar-btn toolbar-btn--text" data-cmd="h2" title="Título (H2)" aria-label="Título H2">H2</button>
+                  <button type="button" class="toolbar-btn toolbar-btn--text" data-cmd="h3" title="Subtítulo (H3)" aria-label="Subtítulo H3">H3</button>
+                  <button type="button" class="toolbar-btn toolbar-btn--text" data-cmd="p" title="Parágrafo" aria-label="Parágrafo">P</button>
+                </div>
+
+                <div class="toolbar-sep" aria-hidden="true"></div>
+
+                <div class="toolbar-group" role="group" aria-label="Listas">
+                  <button type="button" class="toolbar-btn" data-cmd="insertUnorderedList" title="Lista com marcadores" aria-label="Lista com marcadores">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                  </button>
+                  <button type="button" class="toolbar-btn" data-cmd="insertOrderedList" title="Lista numerada" aria-label="Lista numerada">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+                  </button>
+                  <button type="button" class="toolbar-btn" data-cmd="blockquote" title="Citação em destaque" aria-label="Blockquote">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>
+                  </button>
+                  <button type="button" class="toolbar-btn" data-cmd="hr" title="Linha separadora" aria-label="Linha separadora">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  </button>
+                </div>
+
+                <div class="toolbar-sep" aria-hidden="true"></div>
+
+                <div class="toolbar-group" role="group" aria-label="Mídia e Links">
+                  <button type="button" class="toolbar-btn" data-cmd="createLink" title="Inserir link" aria-label="Inserir link">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+                  </button>
+                  <button type="button" class="toolbar-btn" data-cmd="unlink" title="Remover link" aria-label="Remover link">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/><line x1="4" y1="4" x2="20" y2="20"/></svg>
+                  </button>
+                </div>
+
+                <div class="toolbar-spacer" aria-hidden="true"></div>
+
+                <!-- Undo / Redo -->
+                <div class="toolbar-group" role="group" aria-label="Histórico">
+                  <button type="button" class="toolbar-btn" data-cmd="undo" title="Desfazer (Ctrl+Z)" aria-label="Desfazer">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+                  </button>
+                  <button type="button" class="toolbar-btn" data-cmd="redo" title="Refazer (Ctrl+Y)" aria-label="Refazer">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+                  </button>
+                </div>
+
+                <!-- Fullscreen -->
+                <button type="button" class="toolbar-btn toolbar-btn--right" id="fullscreen-editor" title="Expandir editor (F11)" aria-label="Editor em tela cheia">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+                </button>
+              </div>
+
+              <!-- Editor area -->
+              <div
+                id="post-content-editor"
+                class="rich-editor"
+                contenteditable="true"
+                role="textbox"
+                aria-multiline="true"
+                aria-label="Conteúdo do artigo"
+                data-placeholder="Comece a escrever o conteúdo do artigo…&#10;&#10;Use a barra de ferramentas acima para formatar o texto."
+                spellcheck="true"
+                lang="pt-BR"
+              ></div>
+
+              <!-- Inline preview (tab) -->
+              <div id="content-preview-inline" class="content-preview-panel" hidden>
+                <!-- rendered by JS -->
+              </div>
+            </div>
+
+            <!-- META ROW -->
+            <div class="meta-accordion">
+              <button type="button" class="meta-accordion-toggle" id="meta-toggle" aria-expanded="true" aria-controls="meta-body">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
+                Configurações & Metadados
+                <svg class="accordion-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div id="meta-body" class="meta-accordion-body">
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label" for="post-date">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                      Data de Publicação
+                    </label>
+                    <input type="date" id="post-date" class="form-input" required aria-required="true"/>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="post-slug">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+                      Slug (URL do artigo)
+                    </label>
+                    <div class="slug-field">
+                      <span class="slug-prefix" aria-hidden="true">/blog/</span>
+                      <input type="text" id="post-slug" class="form-input slug-input" placeholder="gerado-automaticamente"/>
+                    </div>
+                    <p class="form-hint">Gerado automaticamente do título. Pode personalizar.</p>
+                  </div>
+                </div>
+
+                <!-- Cover image -->
+                <div class="form-group cover-group">
+                  <label class="form-label">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    Imagem de Capa
+                  </label>
+                  <div class="cover-input-area" id="cover-input-area">
+                    <!-- Drop zone -->
+                    <div class="cover-dropzone" id="cover-dropzone" role="button" tabindex="0" aria-label="Arraste uma imagem ou clique para fazer upload">
+                      <div class="dropzone-inner" id="dropzone-inner">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                        <p>Arraste uma imagem aqui ou <strong>clique para selecionar</strong></p>
+                        <span class="dropzone-hint">PNG, JPG, WEBP · Salva como Base64</span>
+                      </div>
+                      <input type="file" id="cover-file-input" accept="image/*" style="display:none;" aria-hidden="true"/>
+                    </div>
+
+                    <div class="cover-or" aria-hidden="true"><span>ou use URL</span></div>
+
+                    <div class="cover-url-row">
+                      <input type="url" id="post-cover-url" class="form-input" placeholder="https://exemplo.com/imagem.jpg"/>
+                      <button type="button" class="btn-ghost btn-sm" id="btn-clear-cover" aria-label="Limpar imagem de capa">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                      </button>
+                    </div>
+                    <p class="form-hint">Cole a URL de uma imagem externa, ou use o upload acima para Base64.</p>
+
+                    <!-- Preview -->
+                    <div id="cover-preview" class="cover-preview" aria-live="polite" aria-label="Pré-visualização da imagem de capa"></div>
+                  </div>
+                </div>
+
+              </div><!-- /meta-body -->
+            </div><!-- /meta-accordion -->
+
+            <!-- BOTTOM ACTIONS -->
+            <div class="form-actions">
+              <button type="button" class="btn-ghost" id="cancel-btn-2">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                Descartar e Voltar
+              </button>
+              <div class="form-actions-right">
+                <span class="save-status" id="save-status-bottom" aria-hidden="true">
+                  <span class="save-dot"></span>
+                  <span id="save-status-text-bottom">Não salvo</span>
+                </span>
+                <button type="submit" class="btn-primary btn-lg" id="save-btn" form="post-form">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                  Salvar Artigo
+                </button>
+              </div>
+            </div>
+          </form>
+        </div><!-- /form-panel -->
+
+        <!-- PREVIEW PANEL (split mode) -->
+        <div class="editor-panel preview-panel" id="preview-panel" hidden aria-label="Painel de pré-visualização">
+          <div class="preview-panel-header">
+            <span class="preview-label">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              Pré-visualização do artigo
+            </span>
+            <span class="preview-hint">Atualiza conforme você escreve</span>
+          </div>
+          <div class="preview-content" id="preview-content">
+            <!-- live preview rendered here -->
+          </div>
+        </div>
+
+      </div><!-- /editor-layout -->
+    </div><!-- /view-editor -->
+
+  </main>
+</div>
+
+<!-- Toast container -->
+<div id="toast-container" aria-live="assertive" aria-atomic="false"></div>
+
+<!-- ═══════════ LOGIN SCREEN ═══════════ -->
+<div id="login-screen" class="login-screen" role="dialog" aria-modal="true" aria-labelledby="login-title" hidden>
+  <div class="login-card">
+
+    <div class="login-logo" aria-hidden="true">
+      <img src="../assets/images/logo-escudo-goldsf.png"
+           alt="Escudo Rafael Machado Advogado"
+           class="login-logo-img"
+           width="48" height="48"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+      <svg width="48" height="56" viewBox="0 0 28 32" fill="none" style="display:none">
+        <path d="M14 0L0 5.5V16C0 23.5 6.2 30.3 14 32C21.8 30.3 28 23.5 28 16V5.5L14 0Z" fill="url(#lg2)"/>
+        <path d="M9 16.5L12.5 20L19 13" stroke="#1E2028" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <defs><linearGradient id="lg2" x1="0" y1="0" x2="28" y2="32"><stop stop-color="#D4AF6A"/><stop offset="1" stop-color="#8B6914"/></linearGradient></defs>
+      </svg>
+    </div>
+
+    <h1 class="login-title" id="login-title">Painel Restrito</h1>
+    <p class="login-sub">Rafael Machado Advocacia — acesso exclusivo</p>
+
+    <form id="login-form" class="login-form" novalidate autocomplete="off">
+
+      <div class="login-field">
+        <label class="login-label" for="login-password">Senha de acesso</label>
+        <div class="login-input-wrap">
+          <svg class="login-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          <input
+            type="password"
+            id="login-password"
+            class="login-input"
+            placeholder="Digite sua senha…"
+            aria-required="true"
+            autocomplete="current-password"
+            autofocus
+          />
+          <button type="button" class="login-eye" id="login-eye" aria-label="Mostrar/ocultar senha">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <p class="login-error" id="login-error" role="alert" aria-live="assertive"></p>
+      </div>
+
+      <div class="login-attempts" id="login-attempts" aria-live="polite"></div>
+
+      <button type="submit" class="login-btn" id="login-btn">
+        <span id="login-btn-text">Entrar no Painel</span>
+        <svg id="login-spinner" class="login-spinner" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" hidden><path d="M21 12a9 9 0 11-6.219-8.56"/></svg>
+      </button>
+
+    </form>
+
+    <p class="login-footer">
+      Acesso bloqueado após 5 tentativas incorretas.
+    </p>
+  </div>
+</div>
+
+<!-- Confirm Delete Modal -->
+<div id="confirm-modal" class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title" hidden>
+  <div class="confirm-box">
+    <div class="confirm-icon" aria-hidden="true">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6M10 11v6M14 11v6M9 6V4h6v2"/></svg>
+    </div>
+    <h2 class="confirm-title" id="confirm-title">Excluir artigo?</h2>
+    <p class="confirm-text" id="confirm-text">Esta ação não pode ser desfeita. O artigo será removido permanentemente do blog.</p>
+    <div class="confirm-actions">
+      <button class="btn-ghost" id="confirm-no">Cancelar</button>
+      <button class="btn-danger" id="confirm-yes">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+        Excluir
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Link dialog -->
+<div id="link-dialog" class="link-dialog" role="dialog" aria-modal="true" aria-labelledby="link-dialog-title" hidden>
+  <div class="link-dialog-box">
+    <h3 class="link-dialog-title" id="link-dialog-title">Inserir Link</h3>
+    <input type="url" id="link-url-input" class="form-input" placeholder="https://exemplo.com" aria-label="URL do link"/>
+    <input type="text" id="link-text-input" class="form-input" placeholder="Texto do link (opcional)" aria-label="Texto do link"/>
+    <div class="link-dialog-actions">
+      <button class="btn-ghost btn-sm" id="link-cancel">Cancelar</button>
+      <button class="btn-primary btn-sm" id="link-confirm">Inserir</button>
+    </div>
+  </div>
+</div>
+
+<script src="../js/cms.js?v=2.0.3"></script>
+<script src="auth.js?v=2.0.3"></script>
+<script src="admin.js?v=2.0.3"></script>
+</body>
+</html>
