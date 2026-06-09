@@ -1639,3 +1639,25 @@ a { text-decoration: none; color: inherit; }
   line-height: 1.6;
 }
 
+.login-back-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 16px;
+  font-size: 0.82rem;
+  color: #D4AF6A;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 150ms ease, transform 150ms ease;
+  width: 100%;
+}
+.login-back-link:hover {
+  color: #ffffff;
+}
+.login-back-link svg {
+  transition: transform 150ms ease;
+}
+.login-back-link:hover svg {
+  transform: translateX(-2px);
+}
