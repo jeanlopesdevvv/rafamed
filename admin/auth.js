@@ -15,7 +15,7 @@
 const CMS_AUTH = (() => {
 
   // ─── CONFIGURAÇÃO ──────────────────────────────────────
-  // Hash SHA-256 da senha padrão: Rafael@2025
+  // Hash SHA-256 da senha padrão: @Rafa@26
   // Para trocar a senha, chame CMS_AUTH.setPassword('nova') no console
   const STORED_HASH_KEY = 'rafaelCMS_auth_hash';
   const SESSION_KEY     = 'rafaelCMS_auth_ok';
@@ -24,8 +24,8 @@ const CMS_AUTH = (() => {
   const MAX_ATTEMPTS    = 5;
   const LOCKOUT_MS      = 30 * 60 * 1000; // 30 minutos
 
-  // Hash SHA-256 de "Rafael@2025" (padrão de fábrica)
-  const DEFAULT_HASH = 'b1f2e8c4a6d9f3e7b5c2a8d4f6e1b3c9a5d7f2e4b8c6a3d1f5e9b7c4a2d8f6e3';
+  // Hash SHA-256 de "@Rafa@26" (padrão de fábrica)
+  const DEFAULT_HASH = '28261c4032ad4b422977d24188d39473295f0a09843378ed297b9871fe3d45d5';
 
   // ─── UTILS ──────────────────────────────────────────────
   async function sha256(str) {
