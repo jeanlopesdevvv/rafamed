@@ -1,6 +1,6 @@
 /**
  * auth.js — Proteção de Acesso ao Painel CMS
- * Rafael Machado Advocacia
+ * Rafael França Advocacia
  *
  * Como funciona:
  * - A senha é armazenada como hash SHA-256 (nunca em texto puro)

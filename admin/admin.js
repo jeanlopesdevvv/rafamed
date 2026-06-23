@@ -1,6 +1,6 @@
 /**
  * admin.js — CMS Admin Panel v2
- * Rafael Machado Advocacia
+ * Rafael França Advocacia
  *
  * Features:
  * - Full CRUD via CMS engine
@@ -934,7 +934,7 @@ function exportPosts() {
   const url   = URL.createObjectURL(blob);
   const a     = document.createElement('a');
   a.href      = url;
-  a.download  = `rafaelmachado-blog-backup-${todayISO()}.json`;
+  a.download  = `rafaelfranca-blog-backup-${todayISO()}.json`;
   a.click();
   URL.revokeObjectURL(url);
   toast(`${posts.length} artigo${posts.length !== 1 ? 's' : ''} exportado${posts.length !== 1 ? 's' : ''} com sucesso!`, 'success');
@@ -961,7 +961,7 @@ function importPosts(e) {
         }
       });
 
-      localStorage.setItem('rafaelMachadoCMS_posts', JSON.stringify(merged));
+      localStorage.setItem('rafaelFrancaCMS_posts', JSON.stringify(merged));
       renderList();
       toast(`Importação concluída: ${added} artigo${added !== 1 ? 's' : ''} novo${added !== 1 ? 's' : ''} adicionado${added !== 1 ? 's' : ''}.`, 'success');
     } catch {

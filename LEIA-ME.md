@@ -1,4 +1,4 @@
-# 📋 Manual do Painel CMS — Blog de Rafael Machado Advocacia
+# 📋 Manual do Painel CMS — Blog de Rafael França Advocacia
 
 ## Como adicionar, editar e excluir artigos do blog
 
@@ -88,7 +88,7 @@ rafahealth/
 
 ### 🖼️ Importante: Adicionar as fotos
 
-Coloque as imagens do Dr. Rafael Machado na pasta **`assets/`**:
+Coloque as imagens do Dr. Rafael França na pasta **`assets/`**:
 - `rafa1.jpeg` — Foto para a seção "O Especialista"
 - `rafa22.jpeg` — Foto principal para a seção Hero
 

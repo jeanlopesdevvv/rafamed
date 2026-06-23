@@ -1,13 +1,13 @@
 /**
  * cms.js — CMS Local Storage Engine
- * Rafael Machado Advocacia
+ * Rafael França Advocacia
  * 
  * Provides full CRUD for blog posts using localStorage.
  * The frontend reads from CMS_KEY, the admin panel writes to it.
  * Zero server dependency — fully client-side CMS.
  */
 
-const CMS_KEY = 'rafaelMachadoCMS_posts';
+const CMS_KEY = 'rafaelFrancaCMS_posts';
 
 const DEFAULT_POSTS = [
   {
@@ -77,6 +77,13 @@ const DEFAULT_POSTS = [
 
 const CMS = {
   init() {
+    // Migração da chave do antigo nome para o novo
+    const oldKey = 'rafaelMachadoCMS_posts';
+    if (localStorage.getItem(oldKey) && !localStorage.getItem(CMS_KEY)) {
+      localStorage.setItem(CMS_KEY, localStorage.getItem(oldKey));
+      localStorage.removeItem(oldKey);
+    }
+
     const stored = localStorage.getItem(CMS_KEY);
     if (!stored) {
       localStorage.setItem(CMS_KEY, JSON.stringify(DEFAULT_POSTS));

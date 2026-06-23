@@ -1,6 +1,6 @@
 /**
  * main.js — Landing Page Logic & Animations
- * Rafael Machado Advocacia
+ * Rafael França Advocacia
  * Skills applied: animejs-animation, design-spells, page-cro
  */
 
