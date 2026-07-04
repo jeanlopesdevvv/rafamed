@@ -127,24 +127,30 @@ let isPreviewOpen  = false;
     }
 
     setLoading(true);
-    const ok = await CMS_AUTH.verify(pwd);
-    setLoading(false);
+    try {
+      const ok = await CMS_AUTH.verify(pwd);
+      setLoading(false);
 
-    if (ok) {
-      CMS_AUTH.setSession();
-      CMS_AUTH.resetAttempts();
-      input.value = '';
-      hideLoginScreen();
-    } else {
-      const n = CMS_AUTH.incrementAttempts();
-      updateLockUI();
-      if (CMS_AUTH.isLocked()) {
-        showError('Acesso bloqueado. Tente novamente em 30 minutos.');
+      if (ok) {
+        CMS_AUTH.setSession();
+        CMS_AUTH.resetAttempts();
+        input.value = '';
+        hideLoginScreen();
       } else {
-        showError('Senha incorreta. Verifique e tente novamente.');
+        const n = CMS_AUTH.incrementAttempts();
+        updateLockUI();
+        if (CMS_AUTH.isLocked()) {
+          showError('Acesso bloqueado. Tente novamente em 30 minutos.');
+        } else {
+          showError('Senha incorreta. Verifique e tente novamente.');
+        }
+        input.value = '';
+        input.focus();
       }
-      input.value = '';
-      input.focus();
+    } catch (err) {
+      setLoading(false);
+      console.error('Erro ao verificar senha:', err);
+      showError('Ocorreu um erro ao verificar a senha. Verifique o console.');
     }
   });
 
